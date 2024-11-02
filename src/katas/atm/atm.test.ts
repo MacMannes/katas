@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ATM } from '@katas/atm/atm';
+import { ATM } from '@katas/atm';
 
 /**
  * Nominal values 10, 20, 50, 100, 200 and 500 dollars.
