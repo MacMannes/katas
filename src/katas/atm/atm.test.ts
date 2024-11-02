@@ -26,14 +26,16 @@ describe('ATM Kata', () => {
     it('should return -1 when amount is within boundaries, but is not a valid note', () => {
         expect(atm.withdraw(5)).toBe(-1);
         expect(atm.withdraw(25)).toBe(-1);
-        expect(atm.withdraw(250)).toBe(-1);
     });
 
-    it('should return 3 for a withdrawal of a nominal values * 3', () => {
-        expect(atm.withdraw(30)).toBe(3);
-        expect(atm.withdraw(60)).toBe(3);
-        expect(atm.withdraw(300)).toBe(3);
-        expect(atm.withdraw(600)).toBe(3);
+    it('should return 3 for 1500', () => {
         expect(atm.withdraw(1500)).toBe(3);
+    });
+
+    it('should compute the minimal amount as expected', () => {
+        expect(atm.withdraw(1400)).toBe(4); // 2 * 500 + 2 * 200
+        expect(atm.withdraw(560)).toBe(3); // 1 * 500 + 1 * 50 + 1 * 10
+        expect(atm.withdraw(300)).toBe(2); // 1 * 200 + 1 * 100
+        expect(atm.withdraw(880)).toBe(6); // All the nominal values
     });
 });
