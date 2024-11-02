@@ -28,4 +28,12 @@ describe('ATM Kata', () => {
         expect(atm.withdraw(25)).toBe(-1);
         expect(atm.withdraw(250)).toBe(-1);
     });
+
+    it('should return 3 for a withdrawal of a nominal values * 3', () => {
+        expect(atm.withdraw(30)).toBe(3);
+        expect(atm.withdraw(60)).toBe(3);
+        expect(atm.withdraw(300)).toBe(3);
+        expect(atm.withdraw(600)).toBe(3);
+        expect(atm.withdraw(1500)).toBe(3);
+    });
 });
