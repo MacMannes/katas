@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "type": "module",
     "moduleResolution": "Bundler",
     "outDir": "dist",
     "esModuleInterop": true,
