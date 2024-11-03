@@ -33,6 +33,7 @@ export class Game {
     private validateRooms(rooms: Room[]) {
         this.ensureUniqueProperty(rooms, 'name');
         this.ensureUniqueProperty(rooms, 'title');
+        this.validateDirections(rooms);
     }
 
     private ensureUniqueProperty(rooms: Room[], propertyName: keyof Room) {
@@ -40,5 +41,23 @@ export class Game {
         if (uniqueValues.size !== rooms.length) {
             throw new Error(`Rooms should have unique ${propertyName}s`);
         }
+    }
+
+    private validateDirections(rooms: Room[]) {
+        rooms.forEach((room) => {
+            room.connections.forEach((connection) => {
+                const roomName = room.name;
+                const connectedRoomName = connection.roomName;
+
+                const connectedRoom = rooms.find((it) => it.name === connectedRoomName);
+                if (!connectedRoom) {
+                    throw new Error(
+                        `Could not connect ${roomName} to ${connectedRoomName}, because room ${connectedRoomName} does not exist.`,
+                    );
+                }
+
+                throw new Error(`Connection from ${roomName} to ${connectedRoomName} is not reversed.`);
+            });
+        });
     }
 }

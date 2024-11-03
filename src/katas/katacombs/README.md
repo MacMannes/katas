@@ -42,3 +42,7 @@ The game at startup shows the title and main description of the initial location
 4 > GO W => move to the WEST
 ```
 
+### World correctness
+
+There are only two requirements for the world. The first is that there should not be two different locations with the same title. The second is that the locations must have mutually reversed references to each other. This means that if from location A going South the player ends up in location B, then from location B going North I must end up in location A. The same principle should be valid for all cardinal points, but also when going up and down.
+
