@@ -15,7 +15,6 @@ export class Game {
 
     public start(): void {
         this.ui.displayRoom(this.roomsByName['start']);
-        this.ui.displayRoom(this.roomsByName['start']);
     }
 
     private groupRooms(rooms: Room[]): Record<string, Room> {

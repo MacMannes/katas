@@ -27,6 +27,7 @@ describe('Game', () => {
     describe('start', () => {
         it('should print the title and description of the starting room', () => {
             game.start();
+            expect(ui.displayRoom).toHaveBeenCalledTimes(1);
             expect(ui.displayRoom).toHaveBeenCalledWith(expect.objectContaining({ name: 'start' }));
         });
     });
