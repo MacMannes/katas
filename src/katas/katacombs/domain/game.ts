@@ -4,6 +4,7 @@ import { groupBy } from '@utils/array';
 
 export class Game {
     private readonly roomsByName: Record<string, Room> = {};
+    private currentRoom: Room;
 
     constructor(
         private readonly ui: UserInterface,
@@ -12,10 +13,11 @@ export class Game {
         this.validateRooms(rooms);
         this.roomsByName = this.groupRooms(rooms);
         this.validateConnections();
+        this.currentRoom = this.roomsByName['start'];
     }
 
     public start(): void {
-        this.ui.displayRoom(this.roomsByName['start']);
+        this.ui.displayRoom(this.currentRoom);
     }
 
     private groupRooms(rooms: Room[]): Record<string, Room> {
@@ -32,6 +34,7 @@ export class Game {
     }
 
     private validateRooms(rooms: Room[]) {
+        this.ensureRoomExists(rooms, 'start');
         this.ensureUniqueProperty(rooms, 'name');
         this.ensureUniqueProperty(rooms, 'title');
     }
@@ -70,5 +73,10 @@ export class Game {
         if (!reversedConnection) {
             throw new Error(`The ${connectionDescription} is not reversed.`);
         }
+    }
+
+    private ensureRoomExists(rooms: Room[], roomName: string) {
+        const room = rooms.find((it) => it.name === roomName);
+        if (!room) throw new Error(`A room with the name "${roomName}" does not exist.`);
     }
 }
