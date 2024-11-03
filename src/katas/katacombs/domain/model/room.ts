@@ -15,4 +15,8 @@ export class Room {
             roomName,
         });
     }
+
+    public findConnection(direction: Direction, roomName: string): Connection | undefined {
+        return this.connections.find((it) => it.roomName === roomName && it.direction === direction);
+    }
 }

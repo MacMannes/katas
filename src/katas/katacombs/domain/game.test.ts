@@ -29,7 +29,9 @@ describe('Game', () => {
             room1.addConnection('NORTH', 'room3');
 
             const rooms = [room1, room2];
-            expect(() => new Game(ui, rooms)).toThrowError();
+            expect(() => new Game(ui, rooms)).toThrowError(
+                'Invalid connection from room1 to room3. Room room3 does not exist.',
+            );
         });
 
         it('should not allow non-traversable connections to rooms', () => {
@@ -38,7 +40,7 @@ describe('Game', () => {
             room1.addConnection('NORTH', room2.name);
 
             const rooms = [room1, room2];
-            expect(() => new Game(ui, rooms)).toThrowError();
+            expect(() => new Game(ui, rooms)).toThrowError('The connection from room1 to room2 is not reversed.');
         });
 
         it('should not fail when all connections are reversed', () => {

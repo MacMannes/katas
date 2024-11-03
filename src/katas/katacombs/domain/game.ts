@@ -1,4 +1,4 @@
-import { oppositeDirectionOf, Room } from '@katas/katacombs/domain/model';
+import { Connection, oppositeOf, Room } from '@katas/katacombs/domain/model';
 import { UserInterface } from '@katas/katacombs/domain/ui';
 import { groupBy } from '@utils/array';
 
@@ -11,6 +11,7 @@ export class Game {
     ) {
         this.validateRooms(rooms);
         this.roomsByName = this.groupRooms(rooms);
+        this.validateConnections();
     }
 
     public start(): void {
@@ -33,7 +34,6 @@ export class Game {
     private validateRooms(rooms: Room[]) {
         this.ensureUniqueProperty(rooms, 'name');
         this.ensureUniqueProperty(rooms, 'title');
-        this.validateDirections(rooms);
     }
 
     private ensureUniqueProperty(rooms: Room[], propertyName: keyof Room) {
@@ -43,28 +43,32 @@ export class Game {
         }
     }
 
-    private validateDirections(rooms: Room[]) {
-        rooms.forEach((room) => {
-            const roomName = room.name;
+    private validateConnections() {
+        for (const room of Object.values(this.roomsByName)) {
+            this.validateConnectionsOfRoom(room);
+        }
+    }
 
-            room.connections.forEach((connection) => {
-                const connectedRoomName = connection.roomName;
+    private validateConnectionsOfRoom(room: Room) {
+        const roomName = room.name;
 
-                const connectedRoom = rooms.find((it) => it.name === connectedRoomName);
-                if (!connectedRoom) {
-                    throw new Error(
-                        `Could not connect ${roomName} to ${connectedRoomName}, because room ${connectedRoomName} does not exist.`,
-                    );
-                }
-
-                const reversedConnection = connectedRoom.connections.find(
-                    (it) => it.roomName === roomName && it.direction === oppositeDirectionOf(connection.direction),
-                );
-
-                if (!reversedConnection) {
-                    throw new Error(`Connection from ${roomName} to ${connectedRoomName} is not reversed.`);
-                }
-            });
+        room.connections.forEach((connection) => {
+            this.validateConnection(connection, roomName);
         });
+    }
+
+    private validateConnection(connection: Connection, fromRoomName: string) {
+        const connectedRoomName = connection.roomName;
+        const connectionDescription = `connection from ${fromRoomName} to ${connectedRoomName}`;
+
+        const connectedRoom = this.roomsByName[connectedRoomName];
+        if (!connectedRoom) {
+            throw new Error(`Invalid ${connectionDescription}. Room ${connectedRoomName} does not exist.`);
+        }
+
+        const reversedConnection = connectedRoom.findConnection(oppositeOf(connection.direction), fromRoomName);
+        if (!reversedConnection) {
+            throw new Error(`The ${connectionDescription} is not reversed.`);
+        }
     }
 }
