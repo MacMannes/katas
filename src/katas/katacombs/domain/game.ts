@@ -1,4 +1,4 @@
-import { Room } from '@katas/katacombs/domain/model';
+import { oppositeDirectionOf, Room } from '@katas/katacombs/domain/model';
 import { UserInterface } from '@katas/katacombs/domain/ui';
 import { groupBy } from '@utils/array';
 
@@ -45,8 +45,9 @@ export class Game {
 
     private validateDirections(rooms: Room[]) {
         rooms.forEach((room) => {
+            const roomName = room.name;
+
             room.connections.forEach((connection) => {
-                const roomName = room.name;
                 const connectedRoomName = connection.roomName;
 
                 const connectedRoom = rooms.find((it) => it.name === connectedRoomName);
@@ -56,7 +57,13 @@ export class Game {
                     );
                 }
 
-                throw new Error(`Connection from ${roomName} to ${connectedRoomName} is not reversed.`);
+                const reversedConnection = connectedRoom.connections.find(
+                    (it) => it.roomName === roomName && it.direction === oppositeDirectionOf(connection.direction),
+                );
+
+                if (!reversedConnection) {
+                    throw new Error(`Connection from ${roomName} to ${connectedRoomName} is not reversed.`);
+                }
             });
         });
     }

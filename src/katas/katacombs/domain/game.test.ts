@@ -13,7 +13,7 @@ describe('Game', () => {
     });
 
     describe('constructor', () => {
-        it('Should not allow ewo rooms with the same name', () => {
+        it('Should not allow two rooms with the same name', () => {
             const room = new Room('start', '', '');
             expect(() => new Game(ui, [room, room])).toThrowError();
         });
@@ -35,10 +35,20 @@ describe('Game', () => {
         it('should not allow non-traversable connections to rooms', () => {
             const room1 = new Room('room1', 'Room1', '');
             const room2 = new Room('room2', 'Room2', '');
-            room1.addConnection('NORTH', room1.name);
+            room1.addConnection('NORTH', room2.name);
 
             const rooms = [room1, room2];
             expect(() => new Game(ui, rooms)).toThrowError();
+        });
+
+        it('should not fail when all connections are reversed', () => {
+            const room1 = new Room('room1', 'Room1', '');
+            const room2 = new Room('room2', 'Room2', '');
+            room1.addConnection('NORTH', room2.name);
+            room2.addConnection('SOUTH', room1.name);
+
+            const rooms = [room1, room2];
+            expect(() => new Game(ui, rooms)).not.toThrowError();
         });
     });
 
