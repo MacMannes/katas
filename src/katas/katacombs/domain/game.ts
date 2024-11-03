@@ -12,15 +12,19 @@ export class Game {
         this.roomsByName = this.groupRooms(rooms);
     }
 
+    public start(): void {
+        this.ui.displayRoom(this.roomsByName['start']);
+    }
+
     private groupRooms(rooms: Room[]): Record<string, Room> {
+        this.assertUniqueNames(rooms);
+        this.assertUniqueTitles(rooms);
+
         const result: Record<string, Room> = {};
 
         const groupedRooms = groupBy(rooms, (room) => room.name);
         for (const name in groupedRooms) {
             const roomToAdd = groupedRooms[name];
-            if (roomToAdd.length > 1) {
-                throw new Error('Two different rooms with the same name are not allowed');
-            }
 
             result[name] = roomToAdd[0];
         }
@@ -28,7 +32,17 @@ export class Game {
         return result;
     }
 
-    public start(): void {
-        this.ui.displayRoom(this.roomsByName['start']);
+    private assertUniqueNames(rooms: Room[]) {
+        const uniqueNames = new Set(rooms.map((it) => it.name));
+        if (uniqueNames.size != rooms.length) {
+            throw new Error('Two different rooms with the same name are not allowed');
+        }
+    }
+
+    private assertUniqueTitles(rooms: Room[]) {
+        const uniqueNames = new Set(rooms.map((it) => it.title));
+        if (uniqueNames.size != rooms.length) {
+            throw new Error('Two different rooms with the same title are not allowed');
+        }
     }
 }

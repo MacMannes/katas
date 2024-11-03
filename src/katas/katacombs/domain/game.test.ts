@@ -17,6 +17,11 @@ describe('Game', () => {
             const room = new Room('start', '', '');
             expect(() => new Game(ui, [room, room])).toThrowError();
         });
+
+        it('Two rooms with the same title are not allowed', () => {
+            const rooms = [new Room('room1', 'Room', ''), new Room('room2', 'Room', '')];
+            expect(() => new Game(ui, rooms)).toThrowError();
+        });
     });
 
     describe('start', () => {
