@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { UserInterface } from '@katas/katacombs/domain';
 import { Room } from '@katas/katacombs/domain';
 
