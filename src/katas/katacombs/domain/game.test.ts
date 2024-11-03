@@ -12,6 +12,13 @@ describe('Game', () => {
         game = new Game(ui, rooms);
     });
 
+    describe('constructor', () => {
+        it('Two rooms with the same name are not allowed', () => {
+            const room = new Room('start', '', '');
+            expect(() => new Game(ui, [room, room])).toThrowError();
+        });
+    });
+
     describe('start', () => {
         it('should print the title and description of the starting room', () => {
             game.start();
@@ -22,6 +29,7 @@ describe('Game', () => {
 
 function createRooms(): Room[] {
     return [
+        new Room('nowhere', 'Nowhere', "You're on the road to Nowhere"),
         new Room(
             'start',
             'Lost in Shoreditch',
