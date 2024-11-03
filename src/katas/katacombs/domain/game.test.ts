@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { Game, NoOpUserInterface, Room, UserInterface } from '@katas/katacombs/domain';
+import { connectRooms, Game, NoOpUserInterface, Room, UserInterface } from '@katas/katacombs/domain';
 import { createMockedObject } from '@utils/test';
 
 describe('Game', () => {
@@ -46,8 +46,7 @@ describe('Game', () => {
         it('should not fail when all connections are reversed', () => {
             const room1 = new Room('room1', 'Room1', '');
             const room2 = new Room('room2', 'Room2', '');
-            room1.addConnection('NORTH', room2.name);
-            room2.addConnection('SOUTH', room1.name);
+            connectRooms(room1, room2, 'SOUTH');
 
             const rooms = [room1, room2];
             expect(() => new Game(ui, rooms)).not.toThrowError();
@@ -64,19 +63,21 @@ describe('Game', () => {
 });
 
 function createRooms(): Room[] {
-    return [
-        new Room('nowhere', 'Nowhere', "You're on the road to Nowhere"),
-        new Room(
-            'start',
-            'Lost in Shoreditch',
-            'You are standing at the end of a brick lane before a small brick building called "The Old Truman Brewery".' +
-                'Around you is a forest of restaurants and bars. A small stream of crafted beer flows out of the building and down a gully.',
-        ),
-        new Room(
-            'building',
-            'Inside the building',
-            'Inside the building' +
-                'you are inside the main room of the truman brewery. there is a strong smell of hops and a dozen empty casks',
-        ),
-    ];
+    const start = new Room(
+        'start',
+        'Lost in Shoreditch',
+        'You are standing at the end of a brick lane before a small brick building called "The Old Truman Brewery".' +
+            'Around you is a forest of restaurants and bars. A small stream of crafted beer flows out of the building and down a gully.',
+    );
+    const building = new Room(
+        'building',
+        'Inside the building',
+        'Inside the building' +
+            'you are inside the main room of the truman brewery. there is a strong smell of hops and a dozen empty casks',
+    );
+    connectRooms(start, building, 'NORTH');
+
+    const nowhere = new Room('nowhere', 'Nowhere', "You're on the road to Nowhere");
+
+    return [nowhere, start, building];
 }

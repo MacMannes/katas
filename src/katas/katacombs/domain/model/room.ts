@@ -1,4 +1,4 @@
-import { Connection, Direction } from '@katas/katacombs/domain';
+import { Connection, Direction, oppositeOf } from '@katas/katacombs/domain';
 
 export class Room {
     readonly connections: Connection[] = [];
@@ -19,4 +19,9 @@ export class Room {
     public findConnection(direction: Direction, roomName: string): Connection | undefined {
         return this.connections.find((it) => it.roomName === roomName && it.direction === direction);
     }
+}
+
+export function connectRooms(from: Room, to: Room, direction: Direction) {
+    from.addConnection(direction, to.name);
+    to.addConnection(oppositeOf(direction), from.name);
 }
