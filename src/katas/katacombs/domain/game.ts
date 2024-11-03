@@ -9,17 +9,16 @@ export class Game {
         private readonly ui: UserInterface,
         rooms: Room[],
     ) {
+        this.validateRooms(rooms);
         this.roomsByName = this.groupRooms(rooms);
     }
 
     public start(): void {
         this.ui.displayRoom(this.roomsByName['start']);
+        this.ui.displayRoom(this.roomsByName['start']);
     }
 
     private groupRooms(rooms: Room[]): Record<string, Room> {
-        this.assertUniqueProperty(rooms, 'name');
-        this.assertUniqueProperty(rooms, 'title');
-
         const result: Record<string, Room> = {};
 
         const groupedRooms = groupBy(rooms, (room) => room.name);
@@ -32,7 +31,12 @@ export class Game {
         return result;
     }
 
-    private assertUniqueProperty(rooms: Room[], propertyName: keyof Room) {
+    private validateRooms(rooms: Room[]) {
+        this.ensureUniqueProperty(rooms, 'name');
+        this.ensureUniqueProperty(rooms, 'title');
+    }
+
+    private ensureUniqueProperty(rooms: Room[], propertyName: keyof Room) {
         const uniqueValues = new Set(rooms.map((room) => room[propertyName]));
         if (uniqueValues.size !== rooms.length) {
             throw new Error(`Rooms should have unique ${propertyName}s`);
