@@ -17,8 +17,8 @@ export class Game {
     }
 
     private groupRooms(rooms: Room[]): Record<string, Room> {
-        this.assertUniqueNames(rooms);
-        this.assertUniqueTitles(rooms);
+        this.assertUniqueProperty(rooms, 'name');
+        this.assertUniqueProperty(rooms, 'title');
 
         const result: Record<string, Room> = {};
 
@@ -32,17 +32,10 @@ export class Game {
         return result;
     }
 
-    private assertUniqueNames(rooms: Room[]) {
-        const uniqueNames = new Set(rooms.map((it) => it.name));
-        if (uniqueNames.size != rooms.length) {
-            throw new Error('Two different rooms with the same name are not allowed');
-        }
-    }
-
-    private assertUniqueTitles(rooms: Room[]) {
-        const uniqueNames = new Set(rooms.map((it) => it.title));
-        if (uniqueNames.size != rooms.length) {
-            throw new Error('Two different rooms with the same title are not allowed');
+    private assertUniqueProperty(rooms: Room[], propertyName: keyof Room) {
+        const uniqueValues = new Set(rooms.map((room) => room[propertyName]));
+        if (uniqueValues.size !== rooms.length) {
+            throw new Error(`Rooms should have unique ${propertyName}s`);
         }
     }
 }
