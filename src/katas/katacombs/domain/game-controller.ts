@@ -8,6 +8,10 @@ export class GameController {
     ) {}
 
     public startGame(): void {
+        this.displayCurrentRoom();
+    }
+
+    private displayCurrentRoom() {
         this.ui.displayRoom(this.game.getCurrentRoom());
     }
 
@@ -16,6 +20,6 @@ export class GameController {
         if (!newRoom) {
             this.ui.displayMessage('There is no way to go that direction.');
         }
-        this.ui.displayRoom(this.game.getCurrentRoom());
+        this.displayCurrentRoom();
     }
 }
