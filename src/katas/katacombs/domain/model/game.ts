@@ -3,27 +3,23 @@ import { groupBy } from '@utils/array';
 
 export class Game {
     private readonly roomsByName: Record<string, Room> = {};
-    private _currentRoom: Room;
+    private currentRoom: Room;
 
     constructor(rooms: Room[]) {
         this.validateRooms(rooms);
         this.roomsByName = this.groupRooms(rooms);
         this.validateConnections();
-        this._currentRoom = this.roomsByName['start'];
+        this.currentRoom = this.roomsByName['start'];
     }
 
     public getCurrentRoom(): Room {
-        return this._currentRoom;
-    }
-
-    private setCurrentRoom(value: Room) {
-        this._currentRoom = value;
+        return this.currentRoom;
     }
 
     public moveToDirection(direction: Direction): Room | undefined {
         const newRoom = this.getRoomInDirection(direction);
         if (newRoom) {
-            this.setCurrentRoom(newRoom);
+            this.currentRoom = newRoom;
         }
         return newRoom;
     }
