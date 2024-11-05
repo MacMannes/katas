@@ -1,4 +1,4 @@
-import { Game } from '@katas/katacombs/domain/model';
+import { Direction, Game } from '@katas/katacombs/domain/model';
 import { UserInterface } from '@katas/katacombs/domain/ui';
 
 export class GameController {
@@ -8,6 +8,14 @@ export class GameController {
     ) {}
 
     public startGame(): void {
-        this.ui.displayRoom(this.game.currentRoom);
+        this.ui.displayRoom(this.game.getCurrentRoom());
+    }
+
+    moveToDirection(direction: Direction) {
+        const newRoom = this.game.moveToDirection(direction);
+        if (!newRoom) {
+            this.ui.displayMessage('There is no way to go that direction.');
+        }
+        this.ui.displayRoom(this.game.getCurrentRoom());
     }
 }

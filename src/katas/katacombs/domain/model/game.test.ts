@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { connectRooms, Game, Room } from '@katas/katacombs/domain';
 
 describe('Game', () => {
@@ -48,6 +48,37 @@ describe('Game', () => {
 
             const rooms = [room1, room2];
             expect(() => new Game(rooms)).toThrowError('A room with the name "start" does not exist.');
+        });
+    });
+
+    describe('Move to a new room', () => {
+        const room1 = new Room('start', 'Room 1', '');
+        const room2 = new Room('room2', 'Room 2', '');
+        connectRooms(room1, room2, 'SOUTH');
+        let game: Game;
+
+        beforeEach(() => {
+            game = new Game([room1, room2]);
+        });
+
+        it('should return the new room, if the move was successful', () => {
+            const result = game.moveToDirection('SOUTH');
+            expect(result).toBe(room2);
+        });
+
+        it('should set the current room to the new room, if the move was successful', () => {
+            game.moveToDirection('SOUTH');
+            expect(game.getCurrentRoom()).toBe(room2);
+        });
+
+        it('should return undefined, if the move could not be made', () => {
+            const result = game.moveToDirection('NORTH');
+            expect(result).toBe(undefined);
+        });
+
+        it('should keep the current room, if the move could not be made', () => {
+            game.moveToDirection('NORTH');
+            expect(game.getCurrentRoom()).toBe(room1);
         });
     });
 });

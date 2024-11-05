@@ -1,4 +1,4 @@
-import { Connection, oppositeOf, Room } from '@katas/katacombs/domain';
+import { Connection, Direction, oppositeOf, Room } from '@katas/katacombs/domain';
 import { groupBy } from '@utils/array';
 
 export class Game {
@@ -12,12 +12,20 @@ export class Game {
         this._currentRoom = this.roomsByName['start'];
     }
 
-    get currentRoom(): Room {
+    public getCurrentRoom(): Room {
         return this._currentRoom;
     }
 
-    private set currentRoom(value: Room) {
+    private setCurrentRoom(value: Room) {
         this._currentRoom = value;
+    }
+
+    public moveToDirection(direction: Direction): Room | undefined {
+        const newRoom = this.getRoomInDirection(direction);
+        if (newRoom) {
+            this.setCurrentRoom(newRoom);
+        }
+        return newRoom;
     }
 
     private groupRooms(rooms: Room[]): Record<string, Room> {
@@ -78,5 +86,10 @@ export class Game {
     private ensureRoomExists(rooms: Room[], roomName: string) {
         const room = rooms.find((it) => it.name === roomName);
         if (!room) throw new Error(`A room with the name "${roomName}" does not exist.`);
+    }
+
+    private getRoomInDirection(direction: Direction): Room | undefined {
+        const roomName = this.getCurrentRoom().connections.find((it) => it.direction === direction)?.roomName;
+        return roomName ? this.roomsByName[roomName] : undefined;
     }
 }

@@ -1,6 +1,6 @@
 import { connectRooms, Room } from '@katas/katacombs/domain';
 
-export function createRooms(): Room[] {
+export function createDefaultRooms(): Room[] {
     const start = new Room(
         'start',
         'Lost in Shoreditch',
