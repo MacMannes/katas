@@ -1,23 +1,23 @@
-import { Connection, oppositeOf, Room } from '@katas/katacombs/domain/model';
-import { UserInterface } from '@katas/katacombs/domain/ui';
+import { Connection, oppositeOf, Room } from '@katas/katacombs/domain';
 import { groupBy } from '@utils/array';
 
 export class Game {
     private readonly roomsByName: Record<string, Room> = {};
-    private currentRoom: Room;
+    private _currentRoom: Room;
 
-    constructor(
-        private readonly ui: UserInterface,
-        rooms: Room[],
-    ) {
+    constructor(rooms: Room[]) {
         this.validateRooms(rooms);
         this.roomsByName = this.groupRooms(rooms);
         this.validateConnections();
-        this.currentRoom = this.roomsByName['start'];
+        this._currentRoom = this.roomsByName['start'];
     }
 
-    public start(): void {
-        this.ui.displayRoom(this.currentRoom);
+    get currentRoom(): Room {
+        return this._currentRoom;
+    }
+
+    private set currentRoom(value: Room) {
+        this._currentRoom = value;
     }
 
     private groupRooms(rooms: Room[]): Record<string, Room> {
