@@ -16,8 +16,12 @@ export class Room {
         });
     }
 
-    public findConnection(direction: Direction, roomName: string): Connection | undefined {
-        return this.connections.find((it) => it.roomName === roomName && it.direction === direction);
+    public findConnection(direction: Direction, roomName?: string): Connection | undefined {
+        if (roomName) {
+            return this.connections.find((it) => it.roomName === roomName && it.direction === direction);
+        } else {
+            return this.connections.find((it) => it.direction === direction);
+        }
     }
 }
 

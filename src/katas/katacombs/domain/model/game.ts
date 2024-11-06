@@ -25,7 +25,7 @@ export class Game {
      * @private
      */
     private findRoomInDirection(direction: Direction): Room | undefined {
-        const roomName = this.getCurrentRoom().connections.find((it) => it.direction === direction)?.roomName;
+        const roomName = this.getCurrentRoom().findConnection(direction)?.roomName;
         return roomName ? this.roomRepository.findRoomByName(roomName) : undefined;
     }
 }
