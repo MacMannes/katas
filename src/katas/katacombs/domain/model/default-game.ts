@@ -11,7 +11,7 @@ export function createDefaultRooms(): Room[] {
         'building',
         'Inside the building',
         'Inside the building' +
-            'you are inside the main room of the truman brewery. there is a strong smell of hops and a dozen empty casks',
+            'Uou are inside the main room of the Truman Brewery. There is a strong smell of hops and a dozen empty casks',
     );
     connectRooms(start, building, 'NORTH');
 

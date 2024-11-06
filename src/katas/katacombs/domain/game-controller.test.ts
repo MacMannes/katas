@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createDefaultRooms, Game, GameController, NoOpUserInterface, UserInterface } from '@katas/katacombs/domain';
 import { createMockedObject } from '@utils/test';
+import { RoomRepository } from '@katas/katacombs/domain/model/room-repository';
 
 describe('GameController', () => {
     const defaultRooms = createDefaultRooms();
@@ -9,7 +10,8 @@ describe('GameController', () => {
 
     beforeEach(() => {
         ui = createMockedObject(NoOpUserInterface);
-        const game = new Game(defaultRooms);
+        const repository = new RoomRepository(defaultRooms);
+        const game = new Game(repository);
         controller = new GameController(game, ui);
     });
 
