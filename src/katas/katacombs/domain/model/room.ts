@@ -1,16 +1,16 @@
-import { Connection, Direction, oppositeOf } from '@katas/katacombs/domain';
+import { Connection, ConnectionOptions, Direction, oppositeOf } from '@katas/katacombs/domain';
 
 export class Room {
     readonly connections: Connection[] = [];
 
     constructor(
-        readonly name: string,
-        readonly title: string,
-        readonly description: string,
+        public readonly name: string,
+        public readonly title: string,
+        public readonly description: string,
     ) {}
 
-    public addConnection(direction: Direction, roomName: string) {
-        this.connections.push(new Connection(direction, roomName));
+    public addConnection(direction: Direction, roomName: string, options?: ConnectionOptions) {
+        this.connections.push(new Connection(direction, roomName, options));
     }
 
     public findConnection(direction: Direction, roomName?: string): Connection | undefined {
@@ -18,7 +18,12 @@ export class Room {
     }
 }
 
-export function connectRooms(from: Room, to: Room, direction: Direction) {
-    from.addConnection(direction, to.name);
-    to.addConnection(oppositeOf(direction), from.name);
+export type RoomToConnect = {
+    room: Room;
+    description?: string;
+};
+
+export function connectRooms(from: RoomToConnect, to: RoomToConnect, direction: Direction) {
+    from.room.addConnection(direction, to.room.name, { description: from.description });
+    to.room.addConnection(oppositeOf(direction), from.room.name, { description: to.description });
 }

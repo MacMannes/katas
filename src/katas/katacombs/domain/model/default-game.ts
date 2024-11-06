@@ -13,7 +13,16 @@ export function createDefaultRooms(): Room[] {
         'Inside the building' +
             'Uou are inside the main room of the Truman Brewery. There is a strong smell of hops and a dozen empty casks',
     );
-    connectRooms(start, building, 'NORTH');
+    connectRooms(
+        {
+            room: start,
+            description: 'I see a brick building with a sign saying "Truman Brewery and a wooden white door".',
+        },
+        {
+            room: building,
+        },
+        'NORTH',
+    );
 
     const nowhere = new Room('nowhere', 'Nowhere', "You're on the road to Nowhere");
 

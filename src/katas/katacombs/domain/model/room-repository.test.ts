@@ -36,7 +36,7 @@ describe('RoomRepository', () => {
         it('should not fail when all connections are reversed', () => {
             const room1 = new Room('start', 'Room 1', '');
             const room2 = new Room('room2', 'Room 2', '');
-            connectRooms(room1, room2, 'SOUTH');
+            connectRooms({ room: room1 }, { room: room2 }, 'SOUTH');
 
             const rooms = [room1, room2];
             expect(() => new RoomRepository(rooms)).not.toThrowError();

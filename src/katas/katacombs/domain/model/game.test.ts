@@ -5,7 +5,7 @@ describe('Game', () => {
     describe('Move to a new room', () => {
         const room1 = new Room('start', 'Room 1', '');
         const room2 = new Room('room2', 'Room 2', '');
-        connectRooms(room1, room2, 'SOUTH');
+        connectRooms({ room: room1 }, { room: room2 }, 'SOUTH');
         let game: Game;
 
         beforeEach(() => {
