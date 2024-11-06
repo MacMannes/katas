@@ -11,15 +11,24 @@ export class GameController {
         this.displayCurrentRoom();
     }
 
-    private displayCurrentRoom() {
-        this.ui.displayRoom(this.game.getCurrentRoom());
-    }
-
-    moveToDirection(direction: Direction) {
+    public moveToDirection(direction: Direction) {
         const newRoom = this.game.moveToDirection(direction);
         if (!newRoom) {
             this.ui.displayMessage('There is no way to go that direction.');
         }
         this.displayCurrentRoom();
+    }
+
+    public look(direction?: Direction) {
+        if (direction) {
+            this.ui.displayMessage(
+                'I see a brick building with a sign saying "Truman Brewery and a wooden white door".',
+            );
+        }
+        this.displayCurrentRoom();
+    }
+
+    private displayCurrentRoom() {
+        this.ui.displayRoom(this.game.getCurrentRoom());
     }
 }

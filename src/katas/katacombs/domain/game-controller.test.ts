@@ -39,4 +39,18 @@ describe('GameController', () => {
             expect(ui.displayRoom).toHaveBeenCalledWith(expect.objectContaining({ name: 'start' }));
         });
     });
+
+    describe('Looking', () => {
+        it('should show the description of the room when looking in no specific direction', () => {
+            controller.look();
+            expect(ui.displayRoom).toHaveBeenCalledWith(expect.objectContaining({ name: 'start' }));
+        });
+
+        it('should show the description when looking in a specific direction', () => {
+            controller.look('NORTH');
+            expect(ui.displayMessage).toHaveBeenCalledWith(
+                'I see a brick building with a sign saying "Truman Brewery and a wooden white door".',
+            );
+        });
+    });
 });
