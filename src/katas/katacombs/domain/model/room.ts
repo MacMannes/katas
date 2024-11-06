@@ -10,17 +10,14 @@ export class Room {
     ) {}
 
     public addConnection(direction: Direction, roomName: string) {
-        this.connections.push({
-            direction,
-            roomName,
-        });
+        this.connections.push(new Connection(direction, roomName));
     }
 
     public findConnection(direction: Direction, roomName?: string): Connection | undefined {
         if (roomName) {
             return this.connections.find((it) => it.roomName === roomName && it.direction === direction);
         } else {
-            return this.connections.find((it) => it.direction === direction);
+            return this.connections.find((it) => it.matchesDirection(direction));
         }
     }
 }
