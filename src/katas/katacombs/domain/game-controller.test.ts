@@ -46,11 +46,16 @@ describe('GameController', () => {
             expect(ui.displayRoom).toHaveBeenCalledWith(expect.objectContaining({ name: 'start' }));
         });
 
-        it('should show the description when looking in a specific direction', () => {
+        it('should show the description when looking in a specific direction with a connection', () => {
             controller.look('NORTH');
             expect(ui.displayMessage).toHaveBeenCalledWith(
                 'I see a brick building with a sign saying "Truman Brewery and a wooden white door".',
             );
+        });
+
+        it('should show something like "Nothing interesting" when looking in a specific direction with NO connection', () => {
+            controller.look('WEST');
+            expect(ui.displayMessage).toHaveBeenCalledWith(expect.stringContaining('Nothing interesting'));
         });
     });
 });

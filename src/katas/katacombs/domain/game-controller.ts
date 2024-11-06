@@ -21,9 +21,14 @@ export class GameController {
 
     public look(direction?: Direction) {
         if (direction) {
-            this.ui.displayMessage(
-                'I see a brick building with a sign saying "Truman Brewery and a wooden white door".',
-            );
+            const connection = this.game.getCurrentRoom().findConnection(direction);
+            if (connection) {
+                this.ui.displayMessage(
+                    'I see a brick building with a sign saying "Truman Brewery and a wooden white door".',
+                );
+            } else {
+                this.ui.displayMessage('Nothing interesting to look at there.');
+            }
         }
         this.displayCurrentRoom();
     }
