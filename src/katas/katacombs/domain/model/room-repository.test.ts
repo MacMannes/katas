@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { connectRooms, Room, RoomRepository } from '@katas/katacombs/domain';
+import { Room, RoomRepository } from '@katas/katacombs/domain';
 
 describe('RoomRepository', () => {
     describe('Create new Repository', () => {
@@ -13,21 +13,10 @@ describe('RoomRepository', () => {
             expect(() => new RoomRepository(rooms)).toThrowError();
         });
 
-        it('should not allow connections to rooms that does not exist', () => {
-            const room1 = new Room('start', 'Room 1', '');
-            const room2 = new Room('room2', 'Room 2', '');
-            room1.addConnection('NORTH', 'room3');
-
-            const rooms = [room1, room2];
-            expect(() => new RoomRepository(rooms)).toThrowError(
-                'Invalid connection from start to room3. Room room3 does not exist.',
-            );
-        });
-
         it('should not allow non-traversable connections to rooms', () => {
             const room1 = new Room('start', 'Room 1', '');
             const room2 = new Room('room2', 'Room 2', '');
-            room1.addConnection('NORTH', room2.name);
+            room1.addConnection('NORTH', room2);
 
             const rooms = [room1, room2];
             expect(() => new RoomRepository(rooms)).toThrowError('The connection from start to room2 is not reversed.');
@@ -36,7 +25,8 @@ describe('RoomRepository', () => {
         it('should not fail when all connections are reversed', () => {
             const room1 = new Room('start', 'Room 1', '');
             const room2 = new Room('room2', 'Room 2', '');
-            connectRooms({ room: room1 }, { room: room2 }, 'SOUTH');
+            room1.addConnection('SOUTH', room2);
+            room2.addConnection('NORTH', room1);
 
             const rooms = [room1, room2];
             expect(() => new RoomRepository(rooms)).not.toThrowError();

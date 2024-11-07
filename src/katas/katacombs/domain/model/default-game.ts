@@ -1,4 +1,4 @@
-import { connectRooms, Room } from '@katas/katacombs/domain';
+import { Room } from '@katas/katacombs/domain';
 
 export function createDefaultRooms(): Room[] {
     const start = new Room(
@@ -13,16 +13,10 @@ export function createDefaultRooms(): Room[] {
         'Inside the building' +
             'Uou are inside the main room of the Truman Brewery. There is a strong smell of hops and a dozen empty casks',
     );
-    connectRooms(
-        {
-            room: start,
-            description: 'I see a brick building with a sign saying "Truman Brewery and a wooden white door".',
-        },
-        {
-            room: building,
-        },
-        'NORTH',
-    );
+    start.addConnection('NORTH', building, {
+        description: 'I see a brick building with a sign saying "Truman Brewery and a wooden white door".',
+    });
+    building.addConnection('SOUTH', start);
 
     const nowhere = new Room('nowhere', 'Nowhere', "You're on the road to Nowhere");
 

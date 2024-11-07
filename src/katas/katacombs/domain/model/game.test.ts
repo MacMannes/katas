@@ -1,11 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { connectRooms, Game, Room, RoomRepository } from '@katas/katacombs/domain';
+import { Game, Room, RoomRepository } from '@katas/katacombs/domain';
 
 describe('Game', () => {
     describe('Move to a new room', () => {
         const room1 = new Room('start', 'Room 1', '');
         const room2 = new Room('room2', 'Room 2', '');
-        connectRooms({ room: room1 }, { room: room2 }, 'SOUTH');
+        room1.addConnection('SOUTH', room2);
+        room2.addConnection('NORTH', room1);
         let game: Game;
 
         beforeEach(() => {
