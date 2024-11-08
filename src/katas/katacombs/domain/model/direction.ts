@@ -1,4 +1,13 @@
-export type Direction = 'NORTH' | 'EAST' | 'SOUTH' | 'WEST' | 'UP' | 'DOWN';
+const directionValues = ['NORTH', 'EAST', 'SOUTH', 'WEST', 'UP', 'DOWN'] as const;
+
+// Define `Direction` as a union of the values in `directionValues`
+export type Direction = (typeof directionValues)[number];
+
+export function isDirection(value?: string): value is Direction {
+    if (!value) return false;
+
+    return (directionValues as readonly string[]).includes(value);
+}
 
 export function oppositeOf(direction: Direction): Direction {
     const opposites: Record<Direction, Direction> = {

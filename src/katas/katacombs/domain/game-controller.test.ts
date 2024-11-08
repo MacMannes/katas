@@ -57,5 +57,10 @@ describe('GameController', () => {
             controller.look('WEST');
             expect(ui.displayMessage).toHaveBeenCalledWith(expect.stringContaining('Nothing interesting'));
         });
+
+        it('should show "I see no ... here" when looking at something that is not here', () => {
+            controller.look('keys');
+            expect(ui.displayMessage).toHaveBeenCalledWith('I see no keys here.');
+        });
     });
 });

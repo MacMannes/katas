@@ -1,4 +1,4 @@
-import { Direction, Game } from '@katas/katacombs/domain/model';
+import { Direction, Game, isDirection } from '@katas/katacombs/domain/model';
 import { UserInterface } from '@katas/katacombs/domain/ui';
 
 export class GameController {
@@ -19,13 +19,20 @@ export class GameController {
         this.displayCurrentRoom();
     }
 
-    public look(direction?: Direction) {
-        if (direction) {
-            const connection = this.game.getCurrentRoom().findConnection(direction);
-            const message = connection?.description ?? 'Nothing interesting to look at there.';
+    public look(subject?: Direction | string) {
+        if (!subject) this.displayCurrentRoom();
+
+        if (isDirection(subject)) {
+            const message = this.lookInDirection(subject);
             this.ui.displayMessage(message);
         }
-        this.displayCurrentRoom();
+
+        this.ui.displayMessage(`I see no ${subject} here.`);
+    }
+
+    private lookInDirection(direction: Direction) {
+        const connection = this.game.getCurrentRoom().findConnection(direction);
+        return connection?.description ?? 'Nothing interesting to look at there.';
     }
 
     private displayCurrentRoom() {
