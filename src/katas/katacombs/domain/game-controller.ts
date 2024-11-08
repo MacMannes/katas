@@ -20,21 +20,25 @@ export class GameController {
     }
 
     public look(subject?: Direction | string) {
-        if (!subject) this.displayCurrentRoom();
-
-        if (isDirection(subject)) {
-            const message = this.lookInDirection(subject);
-            this.ui.displayMessage(message);
+        if (!subject) {
+            this.displayCurrentRoom();
             return;
+        }
+
+        let message: string | undefined = undefined;
+        if (isDirection(subject)) {
+            message = this.lookInDirection(subject);
         }
 
         const item = this.game.getCurrentRoom().findItem(subject);
         if (item) {
-            this.ui.displayMessage(item.descriptions.look);
-            return;
+            message = item.descriptions.look;
         }
 
-        this.ui.displayMessage(`I see no ${subject} here.`);
+        if (!message) {
+            message = `I see no ${subject} here.`;
+        }
+        this.ui.displayMessage(message);
     }
 
     private lookInDirection(direction: Direction) {

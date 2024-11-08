@@ -22,9 +22,7 @@ export class Room {
         this.items.push(item);
     }
 
-    findItem(name?: string): Item | undefined {
-        if (!name) return undefined;
-
+    findItem(name: string): Item | undefined {
         return this.items.find((item) => item.name == name);
     }
 }

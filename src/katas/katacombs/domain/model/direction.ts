@@ -3,9 +3,7 @@ const directionValues = ['NORTH', 'EAST', 'SOUTH', 'WEST', 'UP', 'DOWN'] as cons
 // Define `Direction` as a union of the values in `directionValues`
 export type Direction = (typeof directionValues)[number];
 
-export function isDirection(value?: string): value is Direction {
-    if (!value) return false;
-
+export function isDirection(value: string): value is Direction {
     return (directionValues as readonly string[]).includes(value);
 }
 
