@@ -25,23 +25,24 @@ export class GameController {
             return;
         }
 
-        let message: string | undefined = undefined;
+        const message = this.getMessageForLookingAt(subject);
+        this.ui.displayMessage(message);
+    }
+
+    private getMessageForLookingAt(subject: string): string {
         if (isDirection(subject)) {
-            message = this.lookInDirection(subject);
+            return this.getMessageForLookingInDirection(subject);
         }
 
         const item = this.game.getCurrentRoom().findItem(subject);
         if (item) {
-            message = item.descriptions.look;
+            return item.descriptions.look;
         }
 
-        if (!message) {
-            message = `I see no ${subject} here.`;
-        }
-        this.ui.displayMessage(message);
+        return `I see no ${subject} here.`;
     }
 
-    private lookInDirection(direction: Direction) {
+    private getMessageForLookingInDirection(direction: Direction): string {
         const connection = this.game.getCurrentRoom().findConnection(direction);
         return connection?.description ?? 'Nothing interesting to look at there.';
     }
