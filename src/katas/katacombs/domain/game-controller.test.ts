@@ -82,7 +82,18 @@ describe('GameController', () => {
     });
 
     describe('Taking items', () => {
-        it('should remove the item from the room', () => {
+        it('should say "Ok." when the item exists in the room', () => {
+            controller.moveToDirection('NORTH');
+            controller.take('keys');
+            expect(ui.displayMessage).toBeCalledWith('OK.');
+        });
+
+        it('should say something like Can\'t find ..." when the item can not e found', () => {
+            controller.take('keys');
+            expect(ui.displayMessage).toBeCalledWith("Can't find keys here.");
+        });
+
+        it('should put the item in the inventory when it exists', () => {
             controller.moveToDirection('NORTH');
             controller.take('keys');
             expect(controller.getInventory()).toContainEqual(expect.objectContaining({ name: 'keys' }));

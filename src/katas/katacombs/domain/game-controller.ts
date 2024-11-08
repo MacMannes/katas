@@ -29,7 +29,16 @@ export class GameController {
         this.ui.displayMessage(message);
     }
 
-    public take(item: string) {}
+    public take(itemName: string) {
+        const itemNameToLookup = itemName.toLowerCase();
+        const item = this.game.getCurrentRoom().findItem(itemNameToLookup);
+        if (!item) {
+            this.ui.displayMessage(`Can't find ${itemNameToLookup} here.`);
+            return;
+        }
+
+        this.ui.displayMessage('OK.');
+    }
 
     public getInventory(): Item[] {
         return [
