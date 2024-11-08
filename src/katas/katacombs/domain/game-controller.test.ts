@@ -105,4 +105,13 @@ describe('GameController', () => {
             expect(controller.getInventory()).toContainEqual(expect.objectContaining({ name: 'keys' }));
         });
     });
+
+    describe('Dropping items', () => {
+        it('should put the item in the room when it is in the inventory', () => {
+            controller.moveToDirection('NORTH');
+            controller.take('keys');
+            controller.moveToDirection('SOUTH');
+            expect(controller.getInventory()).not.toContainEqual(expect.objectContaining({ name: 'keys' }));
+        });
+    });
 });
