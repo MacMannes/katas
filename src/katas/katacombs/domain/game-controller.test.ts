@@ -85,6 +85,7 @@ describe('GameController', () => {
         it('should remove the item from the room', () => {
             controller.moveToDirection('NORTH');
             controller.take('keys');
+            expect(controller.getInventory()).toContainEqual(expect.objectContaining({ name: 'keys' }));
         });
     });
 });

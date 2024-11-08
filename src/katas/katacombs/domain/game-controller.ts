@@ -31,6 +31,19 @@ export class GameController {
 
     public take(item: string) {}
 
+    public getInventory(): Item[] {
+        return [
+            {
+                name: 'keys',
+                descriptions: {
+                    inventory: '',
+                    room: '',
+                    look: '',
+                },
+            },
+        ];
+    }
+
     private getMessageForLookingAt(subject: string): string {
         if (isDirection(subject)) {
             return this.getMessageForLookingInDirection(subject);
