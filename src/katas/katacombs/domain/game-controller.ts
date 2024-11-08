@@ -1,4 +1,4 @@
-import { Direction, Game, isDirection } from '@katas/katacombs/domain/model';
+import { Direction, Game, isDirection, Item } from '@katas/katacombs/domain/model';
 import { UserInterface } from '@katas/katacombs/domain/ui';
 
 export class GameController {
@@ -25,6 +25,14 @@ export class GameController {
         if (isDirection(subject)) {
             const message = this.lookInDirection(subject);
             this.ui.displayMessage(message);
+            return;
+        }
+
+        //Check for item in room
+        const item = this.game.getCurrentRoom().findItem(subject);
+        if (item) {
+            this.ui.displayMessage(item.descriptions.look);
+            return;
         }
 
         this.ui.displayMessage(`I see no ${subject} here.`);

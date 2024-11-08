@@ -63,9 +63,10 @@ describe('GameController', () => {
             expect(ui.displayMessage).toHaveBeenCalledWith('I see no keys here.');
         });
 
-        it('should show "I see no ... here" when looking at something that is not here', () => {
+        it('should show the description of the item when found', () => {
+            controller.moveToDirection('NORTH');
             controller.look('keys');
-            expect(ui.displayMessage).toHaveBeenCalledWith('I see no keys here.');
+            expect(ui.displayMessage).toHaveBeenCalledWith("It's a key ring with three rusty keys on it.");
         });
     });
 });

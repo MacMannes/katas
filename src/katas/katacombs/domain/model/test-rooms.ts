@@ -1,4 +1,4 @@
-import { Room } from '@katas/katacombs/domain';
+import { Item, Room } from '@katas/katacombs/domain';
 
 export function createTestRooms(): Room[] {
     const start = new Room(
@@ -17,6 +17,13 @@ export function createTestRooms(): Room[] {
         description: 'I see a brick building with a sign saying "Truman Brewery and a wooden white door".',
     });
     building.addConnection('SOUTH', start);
+    building.addItem(
+        new Item('keys', {
+            inventory: 'Set of keys',
+            room: 'There are some keys on the ground here.',
+            look: "It's a key ring with three rusty keys on it.",
+        }),
+    );
 
     const nowhere = new Room('nowhere', 'Nowhere', "You're on the road to Nowhere");
 

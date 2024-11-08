@@ -1,7 +1,8 @@
-import { Connection, ConnectionOptions, Direction } from '@katas/katacombs/domain';
+import { Connection, ConnectionOptions, Direction, Item } from '@katas/katacombs/domain';
 
 export class Room {
     readonly connections: Connection[] = [];
+    readonly items: Item[] = [];
 
     constructor(
         public readonly name: string,
@@ -15,5 +16,15 @@ export class Room {
 
     public findConnection(direction: Direction, roomName?: string): Connection | undefined {
         return this.connections.find((it) => it.matches(direction, roomName));
+    }
+
+    public addItem(item: Item) {
+        this.items.push(item);
+    }
+
+    findItem(name?: string): Item | undefined {
+        if (!name) return undefined;
+
+        return this.items.find((item) => item.name == name);
     }
 }
