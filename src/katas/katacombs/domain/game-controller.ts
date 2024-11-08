@@ -28,7 +28,6 @@ export class GameController {
             return;
         }
 
-        //Check for item in room
         const item = this.game.getCurrentRoom().findItem(subject);
         if (item) {
             this.ui.displayMessage(item.descriptions.look);
