@@ -1,4 +1,4 @@
-import { Direction, Game, isDirection, Item } from '@katas/katacombs/domain/model';
+import { Direction, Game, isDirection, Item, Room } from '@katas/katacombs/domain/model';
 import { UserInterface } from '@katas/katacombs/domain/ui';
 
 export class GameController {
@@ -9,6 +9,10 @@ export class GameController {
 
     public startGame(): void {
         this.displayCurrentRoom();
+    }
+
+    public getCurrentRoom(): Room {
+        return this.game.getCurrentRoom();
     }
 
     public moveToDirection(direction: Direction) {
@@ -31,12 +35,13 @@ export class GameController {
 
     public take(itemName: string) {
         const itemNameToLookup = itemName.toLowerCase();
-        const item = this.game.getCurrentRoom().findItem(itemNameToLookup);
+        const item = this.getCurrentRoom().findItem(itemNameToLookup);
         if (!item) {
             this.ui.displayMessage(`Can't find ${itemNameToLookup} here.`);
             return;
         }
 
+        this.transferItemFromRoomToInventory(item);
         this.ui.displayMessage('OK.');
     }
 
@@ -62,18 +67,22 @@ export class GameController {
     }
 
     private getMessageForLookingInDirection(direction: Direction): string {
-        const connection = this.game.getCurrentRoom().findConnection(direction);
+        const connection = this.getCurrentRoom().findConnection(direction);
         return connection?.description ?? 'Nothing interesting to look at there.';
     }
 
     private getMessageForLookingAtItem(itemName: string): string | undefined {
-        const item = this.game.getCurrentRoom().findItem(itemName);
+        const item = this.getCurrentRoom().findItem(itemName);
         if (item) {
             return item.descriptions.look;
         }
     }
 
+    private transferItemFromRoomToInventory(item: Item) {
+        this.getCurrentRoom().removeItem(item);
+    }
+
     private displayCurrentRoom() {
-        this.ui.displayRoom(this.game.getCurrentRoom());
+        this.ui.displayRoom(this.getCurrentRoom());
     }
 }

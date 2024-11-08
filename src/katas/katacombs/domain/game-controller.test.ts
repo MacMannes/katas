@@ -93,6 +93,12 @@ describe('GameController', () => {
             expect(ui.displayMessage).toBeCalledWith("Can't find keys here.");
         });
 
+        it('should remove the item from the room when it exists', () => {
+            controller.moveToDirection('NORTH');
+            controller.take('keys');
+            expect(controller.getCurrentRoom().findItem('keys')).toBeUndefined();
+        });
+
         it('should put the item in the inventory when it exists', () => {
             controller.moveToDirection('NORTH');
             controller.take('keys');
