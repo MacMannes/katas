@@ -1,16 +1,16 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { createDefaultRooms, Game, GameController, NoOpUserInterface, UserInterface } from '@katas/katacombs/domain';
+import { createTestRooms, Game, GameController, NoOpUserInterface, UserInterface } from '@katas/katacombs/domain';
 import { createMockedObject } from '@utils/test';
 import { RoomRepository } from '@katas/katacombs/domain/model/room-repository';
 
 describe('GameController', () => {
-    const defaultRooms = createDefaultRooms();
+    const testRooms = createTestRooms();
     let ui: UserInterface;
     let controller: GameController;
 
     beforeEach(() => {
         ui = createMockedObject(NoOpUserInterface);
-        const repository = new RoomRepository(defaultRooms);
+        const repository = new RoomRepository(testRooms);
         const game = new Game(repository);
         controller = new GameController(game, ui);
     });
@@ -56,6 +56,11 @@ describe('GameController', () => {
         it('should show something like "Nothing interesting" when looking in a specific direction with NO connection', () => {
             controller.look('WEST');
             expect(ui.displayMessage).toHaveBeenCalledWith(expect.stringContaining('Nothing interesting'));
+        });
+
+        it('should show "I see no ... here" when looking at something that is not here', () => {
+            controller.look('keys');
+            expect(ui.displayMessage).toHaveBeenCalledWith('I see no keys here.');
         });
 
         it('should show "I see no ... here" when looking at something that is not here', () => {
