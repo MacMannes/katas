@@ -34,15 +34,11 @@ export class GameController {
     }
 
     public take(itemName: string) {
-        const itemNameToLookup = itemName.toLowerCase();
-        const item = this.getCurrentRoom().findItem(itemNameToLookup);
-        if (!item) {
-            this.ui.displayMessage(`Can't find ${itemNameToLookup} here.`);
-            return;
+        const item = this.tryToTakeItem(itemName);
+        if (item) {
+            this.transferItemFromRoomToInventory(item);
+            this.ui.displayMessage('OK.');
         }
-
-        this.transferItemFromRoomToInventory(item);
-        this.ui.displayMessage('OK.');
     }
 
     public getInventory(): Item[] {
@@ -76,6 +72,17 @@ export class GameController {
         if (item) {
             return item.descriptions.look;
         }
+    }
+
+    private tryToTakeItem(itemName: string): Item | undefined {
+        const itemNameToLookup = itemName.toLowerCase();
+        const item = this.getCurrentRoom().findItem(itemNameToLookup);
+        if (!item) {
+            this.ui.displayMessage(`Can't find ${itemNameToLookup} here.`);
+            return undefined;
+        }
+
+        return item;
     }
 
     private transferItemFromRoomToInventory(item: Item) {
