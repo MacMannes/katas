@@ -80,4 +80,11 @@ describe('GameController', () => {
             expect(ui.displayRoom).toHaveBeenCalledTimes(0);
         });
     });
+
+    describe('Taking items', () => {
+        it('should remove the item from the room', () => {
+            controller.moveToDirection('NORTH');
+            controller.take('keys');
+        });
+    });
 });

@@ -29,6 +29,8 @@ export class GameController {
         this.ui.displayMessage(message);
     }
 
+    public take(item: string) {}
+
     private getMessageForLookingAt(subject: string): string {
         if (isDirection(subject)) {
             return this.getMessageForLookingInDirection(subject);
