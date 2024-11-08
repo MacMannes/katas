@@ -34,17 +34,19 @@ export class GameController {
             return this.getMessageForLookingInDirection(subject);
         }
 
-        const item = this.game.getCurrentRoom().findItem(subject);
-        if (item) {
-            return item.descriptions.look;
-        }
-
-        return `I see no ${subject} here.`;
+        return this.getMessageForLookingAtItem(subject) ?? `I see no ${subject} here.`;
     }
 
     private getMessageForLookingInDirection(direction: Direction): string {
         const connection = this.game.getCurrentRoom().findConnection(direction);
         return connection?.description ?? 'Nothing interesting to look at there.';
+    }
+
+    private getMessageForLookingAtItem(itemName: string): string | undefined {
+        const item = this.game.getCurrentRoom().findItem(itemName);
+        if (item) {
+            return item.descriptions.look;
+        }
     }
 
     private displayCurrentRoom() {
